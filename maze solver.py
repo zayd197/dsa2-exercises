@@ -38,6 +38,6 @@ for row in range(SIZE):
         if maze[row][col]==WALL:
             line=line+"##"
         else:
-            line=line+" "
-            print(line)
+            line=line+"  "
+    print(line)
             
