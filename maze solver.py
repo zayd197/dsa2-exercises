@@ -49,3 +49,22 @@ for row in range(SIZE):
             if maze[row][col] == PATH:
                 openings.append((row,col))
 print("Entry/Exit has been found at (row,column):",openings)
+
+#Now we are going to ask the user which approach he will use
+
+approach=""
+
+while approach != "backtracking" and approach !="las vegas":
+    print("Whhich approach do you want use? backtracking or las vegas?")
+    approach=input("Your choice:")
+
+    if approach != "backtracking" and approach != "las vegas":
+        print("Please choose backtracking or las vegas")
+
+if approach == "backtracking":
+    print("backtracking it is!")
+else:
+    print("las vegas it is!")
+    
+
+    
