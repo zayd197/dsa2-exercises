@@ -40,4 +40,12 @@ for row in range(SIZE):
         else:
             line=line+"  "
     print(line)
-            
+
+#finding the entrance and exit of the maze. They will be the path squares on the outside edge of the maze.
+openings=[]
+for row in range(SIZE):
+    for col in range(SIZE):
+        if row == 0 or col == 0 or row == SIZE -1 or col == SIZE -1:
+            if maze[row][col] == PATH:
+                openings.append((row,col))
+print("Entry/Exit has been found at (row,column):",openings)
