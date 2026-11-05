@@ -76,12 +76,6 @@ draw_graph(graph2, positions2, "Graph 2")
 mst2=MyMinimumSpanningTree(graph2)
 draw_graph(mst2, positions2, "Graph 2 MST")
 
-print("Graph 2")
-positions2=nx.spring_layout(graph2, seed=2)
-draw_graph(graph2, positions2, "Graph 2")
-mst2=MyMinimumSpanningTree(graph2)
-draw_graph(mst2, positions2, "Graph 2 MST")
-
 
 #drawing graph3 with 7 nodes and 10 edges
 
