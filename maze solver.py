@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import random
 
 WALL = 1
 PATH = 0
@@ -55,16 +56,66 @@ print("Entry/Exit has been found at (row,column):",openings)
 approach=""
 
 while approach != "backtracking" and approach !="las vegas":
-    print("Whhich approach do you want use? backtracking or las vegas?")
+    print("Which approach do you want to use? backtracking or las vegas?")
     approach=input("Your choice:")
 
     if approach != "backtracking" and approach != "las vegas":
         print("Please choose backtracking or las vegas")
 
+
+
+#las vegas approach
+
+def las_vegas(maze, start, end):
+    row=start[0]
+    col=start[1]
+    visited=[(row,col)]  #this is every square we have stepped on in order
+    steps=0
+
+    while steps<200:        #making a list of squares we are allowed to move to
+        possible_moves=[]
+
+        if row-1>=0 and maze[row-1][col] == PATH:   #up
+            possible_moves.append((row-1, col))
+
+        if row + 1 < SIZE and maze[row + 1][col] == PATH:  #down
+            possible_moves.append((row + 1, col))
+
+        if col - 1 >= 0 and maze[row][col - 1] == PATH:     #left
+            possible_moves.append((row, col - 1))
+
+        if col + 1 < SIZE and maze[row][col + 1] == PATH:  #right
+            possible_moves.append((row, col + 1))
+
+        next_square=random.choice(possible_moves) #picking a random move from the allowed list possible_moves
+        row=next_square[0]
+        col=next_square[1]
+        visited.append((row,col))
+        steps=steps+1
+
+        if (row,col)==end:  #have we found the exit?
+            return True, visited
+
+    return False,visited  #200 steps used without finding the exit
+
+start=openings[0] #entrance at the top
+end=openings[1]  #exit at the bottom
+
 if approach == "backtracking":
     print("backtracking it is!")
 else:
     print("las vegas it is!")
-    
+    success, visited = las_vegas(maze, start, end)
+    if success:
+        print("Success! Found the exit in", len(visited) - 1, "steps.")
+    else:
+        print("Failed: no exit found after 200 steps.")
+    print("Number of squares visited:", len(visited))
 
-    
+    successes=0 #test the algorithm to see how many successes in 1000 runs
+    for i in range(1000):
+        success, visited = las_vegas(maze, start, end)
+        if success:
+            successes=successes+1
+    print("We have had", successes, "successes out of 1000")
+
