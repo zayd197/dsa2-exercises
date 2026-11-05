@@ -69,6 +69,7 @@ while approach != "backtracking" and approach !="las vegas":
 def las_vegas(maze, start, end):
     row=start[0]
     col=start[1]
+    previous=None #the square we just came from
     visited=[(row,col)]  #this is every square we have stepped on in order
     steps=0
 
@@ -87,7 +88,11 @@ def las_vegas(maze, start, end):
         if col + 1 < SIZE and maze[row][col + 1] == PATH:  #right
             possible_moves.append((row, col + 1))
 
+        if len(possible_moves)>1 and previous in possible_moves: #this says dont go straight back unless it is the only way
+            possible_moves.remove(previous)
+
         next_square=random.choice(possible_moves) #picking a random move from the allowed list possible_moves
+        previous=(row,col)
         row=next_square[0]
         col=next_square[1]
         visited.append((row,col))
