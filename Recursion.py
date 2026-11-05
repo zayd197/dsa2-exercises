@@ -25,3 +25,16 @@ def visit(instructions, i):
 
     #recursive case: this index, followed by every index visited from the next one
     return [i] + visit(instructions, next_index)
+
+def follow_instructions(instructions: list[str])-> list[int]:
+    return visit(instructions,0)
+
+
+#first test, answer should be [0,4,5]
+
+example=["blue","green","red","blue","green","red"]
+print("for example",example)
+print("Indexes", follow_instructions(example),"were visited")
+print()
+
+         
