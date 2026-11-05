@@ -30,3 +30,30 @@ def MyMinimumSpanningTree(Graph) -> nx.Graph:
            print("We will add",node1,"-",node2,"with weight", weight)
     
     return mst
+
+def draw_graph(Graph, positions, title):
+    nx.draw(Graph, positions,with_labels=True, node_color="lightblue",node_size=800)
+    nx.draw_networkx_edge_labels(Graph, positions, edge_labels=nx.get_edge_attributes(Graph, "weight"))
+    plt.title(title)
+    plt.show()
+
+#drawing graph1
+    
+graph1=nx.Graph()
+graph1.add_edge("A", "B", weight=4)
+graph1.add_edge("A", "C", weight=2)
+graph1.add_edge("A", "D", weight=7)
+graph1.add_edge("B", "C", weight=5)
+graph1.add_edge("B", "E", weight=10)
+graph1.add_edge("C", "D", weight=3)
+graph1.add_edge("C", "E", weight=8)
+graph1.add_edge("C", "F", weight=6)
+graph1.add_edge("D", "F", weight=1)
+graph1.add_edge("E", "F", weight=9)
+graph1.add_edge("B", "F", weight=11)
+
+print("Graph 1")
+positions1=nx.spring_layout(graph1, seed=1)
+draw_graph(graph1, positions1, "Graph 1")
+mst1=MyMinimumSpanningTree(graph1)
+draw_graph(mst1, positions1, "Graph 1 MST")
