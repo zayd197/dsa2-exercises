@@ -103,24 +103,96 @@ def las_vegas(maze, start, end):
 
     return False,visited  #200 steps used without finding the exit
 
-start=openings[0] #entrance at the top
-end=openings[1]  #exit at the bottom
+
+#backtracking approach
+
+def backtracking(maze, start, end):
+    path=[start]        #the route we are on right now (works like a stack)
+    visited=[start]     #every square we have ever stepped on
+
+    while len(path) > 0:
+        row=path[-1][0]     #the last square in the path is where we are now
+        col=path[-1][1]
+
+        if (row,col) == end:    #have we found the exit?
+            return True, visited
+
+        moved=False
+
+        if moved == False and row+1 < SIZE and maze[row+1][col] == PATH and (row+1,col) not in visited:  #going down
+            path.append((row+1,col))
+            visited.append((row+1,col))
+            moved=True
+       
+        if moved == False and col+1 < SIZE and maze[row][col+1] == PATH and (row,col+1) not in visited: #going right
+            path.append((row,col+1))
+            visited.append((row,col+1))
+            moved=True
+     
+        if moved == False and col-1 >= 0 and maze[row][col-1] == PATH and (row,col-1) not in visited: #going left
+            path.append((row,col-1))
+            visited.append((row,col-1))
+            moved=True
+       
+        if moved == False and row-1 >= 0 and maze[row-1][col] == PATH and (row-1,col) not in visited: #going up
+            path.append((row-1,col))
+            visited.append((row-1,col))
+            moved=True
+
+        #dead end: no new square to move to, so go back one square
+        if moved == False:
+            path.pop()
+
+    return False, visited   #path is empty: we went all the way back to the start
+
+#drawing the maze with the visited squares coloured in
+
+def show_visited(maze, visited, start, end, title):
+    picture=[]
+    for row in range(SIZE):
+        picture_row=[]
+        for col in range(SIZE):
+            if (row,col) == start:
+                picture_row.append([0, 0.8, 0])     #green = entrance
+            elif (row,col) == end:
+                picture_row.append([1, 0, 0])       #red = exit
+            elif (row,col) in visited:
+                picture_row.append([1, 0.8, 0])     #yellow = visited
+            elif maze[row][col] == WALL:
+                picture_row.append([0, 0, 0])       #black = wall
+            else:
+                picture_row.append([1, 1, 1])       #white = not visited
+        picture.append(picture_row)
+
+    plt.imshow(picture)
+    plt.title(title)
+    plt.savefig("visited.png")   #saves a copy of the picture for the report
+    plt.show()
+
+
+#running the approach the user chose
+
+start=openings[0]   #entrance at the top
+end=openings[1]     #exit at the bottom
 
 if approach == "backtracking":
     print("backtracking it is!")
+    success, visited = backtracking(maze, start, end)
+    if success:
+        print("We made it out!")
+        show_visited(maze, visited, start, end, "Backtracking: exit found")
+    else:
+        print("We got lost.")
+        show_visited(maze, visited, start, end, "Backtracking: no route found")
+    print("We visited", len(visited),"squares")
+
 else:
     print("las vegas it is!")
     success, visited = las_vegas(maze, start, end)
     if success:
-        print("Success! Found the exit in", len(visited) - 1, "steps.")
+        print("We made it out!", len(visited) - 1, "steps.")
+        show_visited(maze, visited, start, end, "Las Vegas: exit found")
     else:
-        print("Failed: no exit found after 200 steps.")
-    print("Number of squares visited:", len(visited))
-
-    successes=0 #test the algorithm to see how many successes in 1000 runs
-    for i in range(1000):
-        success, visited = las_vegas(maze, start, end)
-        if success:
-            successes=successes+1
-    print("We have had", successes, "successes out of 1000")
-
+        print("We got lost after 200 steps")
+        show_visited(maze, visited, start, end, "Las Vegas: failed after 200 steps")
+    print("We visited", len(visited), "square")
