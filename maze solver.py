@@ -196,3 +196,30 @@ else:
         print("We got lost after 200 steps")
         show_visited(maze, visited, start, end, "Las Vegas: failed after 200 steps")
     print("We visited", len(visited), "square")
+
+
+#success rate of each approach after 10000 runs
+
+RUNS=10000
+las_vegas_successes=0
+backtracking_successes=0
+
+print()
+print("Running each approach", RUNS, "times, please wait...")
+
+for i in range(RUNS):
+    success, visited = las_vegas(maze, start, end)
+    if success:
+        las_vegas_successes=las_vegas_successes+1
+
+    success, visited = backtracking(maze, start, end)
+    if success:
+        backtracking_successes=backtracking_successes+1
+
+las_vegas_rate=las_vegas_successes/RUNS*100
+backtracking_rate=backtracking_successes/RUNS*100
+
+print("Las Vegas has", las_vegas_successes, "successes out of", RUNS, "=", round(las_vegas_rate, 2), "%")
+print("Backtracking has", backtracking_successes, "successes out of", RUNS, "=", round(backtracking_rate, 2), "%")
+
+
